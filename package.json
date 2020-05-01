@@ -1,5 +1,5 @@
 {
-  "name": "prco-text-poc",
+  "name": "@cogent-labs/prco-text",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,7 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@signalwire/node": "^2.3.3",
     "dotenv": "^8.2.0",
-    "twilio": "^3.42.2"
+    "minimist": "^1.2.5",
+    "twilio": "^3.42.2",
+    "validator": "^13.0.0"
+  },
+  "bin": {
+    "prcoText": "./src/perco-text.js"
   }
 }
