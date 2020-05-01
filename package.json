@@ -17,6 +17,6 @@
     "validator": "^13.0.0"
   },
   "bin": {
-    "prcoText": "./src/perco-text.js"
+    "prcoText": "./src/prco-text.js"
   }
 }
