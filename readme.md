@@ -1,27 +1,57 @@
-# prco-text-poc
+# @cogent-labs/prco-text
 
-A proof of concept for prco texting
+A utility that allows texting.
 
-## goal
+## Installation
 
-send a text message to phones using any carrier.
+    npm install @cogent-labs/prco-text
 
-## services
+## Usage
 
-    Twilio
-        - mama bear
-        - easy to use
-        - robust
-        - demo working
-        - costs .7 cents per text
+    USAGE
 
-    SignalWire
-        - more complicated alternative
-        - less expensive
-        - robust
+        prco-text [options]
 
-## tasks
+        OPTIONS
 
-    Working twilio demo -- complete
+            -s,--service   twilio or signalwire -- default: signalwire
+            -f,--from      originating phone number -- default: number in .env file
+            -t,--to        destination phone number
+            -m,--message   message to be sent
+            -h,--help      display usage help
 
-    Confirm carrier agnostic -- WIP:
+    EXAMPLE
+
+        $ prco-text --to 415-222-3333 --message 'hello,
+        Your car is ready :)
+
+        PRCO
+        415-555-1212'
+
+## Author
+
+Frank Gutierrez
+
+npm.frankg@gmail.com
+
+## License
+
+Copyright (c) 2020 Frank Gutierrez III
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
