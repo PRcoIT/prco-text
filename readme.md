@@ -6,6 +6,24 @@ A utility that allows texting.
 
     npm install @cogent-labs/prco-text
 
+## Configuration
+
+Signup and configure signalwire and twilio accounts
+
+Configure .env file
+
+    # TWILIO
+    twilioAccountSid=xxxxx
+    twilioAuthToken=xxxxx
+    twilioFrom=xxxxx
+
+
+    # SIGNAL WIRE
+    signalwireFrom=xxxxx
+    signalwireSpaceUrl=xxxxx
+    signalwireProjectId=xxxxx
+    signalwireApiToken=xxxxx
+
 ## Usage
 
     USAGE
