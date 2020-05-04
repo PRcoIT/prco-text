@@ -3,8 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "bin": {
+    "prcoText": "./src/prco-text.js"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +23,7 @@
     "twilio": "^3.42.2",
     "validator": "^13.0.0"
   },
-  "bin": {
-    "prcoText": "./src/prco-text.js"
+  "devDependencies": {
+    "jest": "^25.5.4"
   }
 }

@@ -1,6 +1,7 @@
+const fs = require("fs");
+const path = require("path");
 const parseArgs = require("minimist");
 const validator = require("validator");
-require("dotenv").config();
 
 const usage = () => {
   const message = `
@@ -10,11 +11,13 @@ USAGE
 
     OPTIONS
 
-        -s,--service   twilio or signalwire -- default: signalwire
-        -f,--from      originating phone number -- default: number in .env file
-        -t,--to        destination phone number
-        -m,--message   message to be sent
-        -h,--help      display usage help
+        -c,--config_env_file  location of file containing environment variables
+                              defaults to $HOME/protected/prco-text-env
+        -s,--service          twilio or signalwire -- default: signalwire
+        -f,--from             originating phone number -- default: number in .env file
+        -t,--to               destination phone number
+        -m,--message          message to be sent
+        -h,--help             display usage help
 
 EXAMPLE
 
@@ -26,16 +29,18 @@ EXAMPLE
 
 
   `;
-  console.log(message);
+
+  return message;
 };
 
-const abortScript = (reason) => {
-  console.log(`\n${reason}`);
-  usage();
-  process.exit(0);
+const abort = (message) => {
+  throw {
+    errorMessage: `${message}\n${usage()}`,
+    error: new Error(message),
+  };
 };
 
-const validatedEnv = () => {
+const validatedEnv = async () => {
   const signalwireEnvVars = [
     "signalwireFrom",
     "signalwireSpaceUrl",
@@ -49,55 +54,66 @@ const validatedEnv = () => {
   let reason = "";
   [...signalwireEnvVars, ...twilioEnvVars].forEach((envVar) => {
     if (process.env[envVar] === undefined) {
-      reason += `Invalid env variable: ${envVar}`;
+      reason += `Invalid env variable: ${envVar}\n`;
     } else {
       validEnvVars[envVar] = process.env[envVar];
     }
   });
 
-  if (reason) abortScript(reason);
+  if (reason) abort(reason);
 
   return validEnvVars;
 };
 
-const validatedOptions = () => {
+const validatedOptions = async () => {
   var options = parseArgs(process.argv.slice(2), {
-    string: ["service", "from", "to", "message", "help"],
-    alias: { service: "s", from: "f", to: "t", message: "m", help: "h" },
+    string: ["config_env_file  ", "service", "from", "to", "message", "help"],
+    alias: { config_env_file: "c", service: "s", from: "f", to: "t", message: "m", help: "h" },
     default: { service: "signalwire" },
   });
 
+  const config_env_file =
+    options.config_env_file || path.join(process.env.HOME, "protected", "prco-text-env");
+
+  !fs.existsSync(config_env_file)
+    ? abort(`Missing env file: ${config_env_file}`)
+    : require("dotenv").config(config_env_file);
+
+  const envVars = await validatedEnv();
+  const { twilioFrom, signalwireFrom } = envVars;
+
   let reason = "";
 
-  if (options.help !== undefined) abortScript("");
+  if (options.help !== undefined) abort("");
 
   if (options.service !== "signalwire" && options.service !== "twilio") {
     reason += "Invalid service: use twilio or signalwire.\n";
   }
 
-  const { twilioFrom, signalwireFrom } = validatedEnv();
   const defaultFrom = options.service === "signalwire" ? signalwireFrom : twilioFrom;
-  const { service, from = defaultFrom, to, message } = options;
+  const { service, from = defaultFrom, to = "", message = "" } = options;
+  options.from = from;
 
-  if (!from || !to || !message) {
-    reason += "Missing options.\n";
-  }
+  ["from", "to", "message"].forEach((option) => {
+    if (!options[option]) abort(`Missing '${option}' option.\n`);
+  });
 
-  if (from && !validator.isMobilePhone(from)) {
+  if (from.length < 10 || !validator.isMobilePhone(from)) {
     reason += `Invalid 'from' field: invalid phone format: ${from}\n`;
   }
 
-  if (to && !validator.isMobilePhone(to)) {
+  if (to.length < 10 || !validator.isMobilePhone(to)) {
     reason += `Invalid 'to' field: invalid phone format: ${to}\n`;
   }
 
-  reason && abortScript(reason);
+  if (reason) abort(reason);
 
-  return { service, from, to, message };
+  return { ...envVars, service, from, to, message };
 };
 
-const getOptions = () => ({ ...validatedEnv(), ...validatedOptions() });
+const getOptions = async () => validatedOptions();
 
 module.exports = {
+  usage,
   getOptions,
 };
