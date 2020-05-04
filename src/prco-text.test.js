@@ -82,6 +82,8 @@ describe("prco-text", () => {
       it("should show response from server", async () => {
         process.argv = ["node", "prco-check-status", "-t", "+14159353327", "-m", "booya"];
         response = await prcoText();
+        response = response.replace(/^sid:.*$/gm, "sid:");
+        response = response.replace(/^date_created:.*$/gm, "date_created:");
         expect(response).toMatchSnapshot();
       });
     });

@@ -357,9 +357,9 @@ EXAMPLE
 exports[`prco-text valid options when all options valid should show response from server 1`] = `
 "---
 service: signalwire
-sid: 9db9e771-04d7-4222-a5a3-79fda040bf70
+sid:
 api_version: 2010-04-01
-date_created: Mon May 04 2020 01:43:06 GMT-0700 (Pacific Daylight Time)
+date_created:
 date_sent: null
 direction: outbound-api
 status: queued
