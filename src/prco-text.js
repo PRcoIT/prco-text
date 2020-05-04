@@ -12,9 +12,10 @@ const isRunningTests = typeof jest !== "undefined";
 const prcoText = async () => {
   return getOptions()
     .then(async (options) => {
-      return options.service === "twilio"
-        ? await twilioSend(options)
-        : await signalwireSend(options);
+      const response =
+        options.service === "twilio" ? await twilioSend(options) : await signalwireSend(options);
+      if (!isRunningTests) console.log(response);
+      return response;
     })
     .catch((e) => {
       if (!isRunningTests) console.log(e.errorMessage);

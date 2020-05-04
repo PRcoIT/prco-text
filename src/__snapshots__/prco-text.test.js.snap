@@ -1,0 +1,373 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`prco-text invalid options when help option given should only display usage 1`] = `
+Object {
+  "error": [Error],
+  "errorMessage": "
+
+USAGE
+
+    prco-text [options]
+
+    OPTIONS
+
+        -c,--config_env_file  location of file containing environment variables
+                              defaults to $HOME/protected/prco-text-env
+        -s,--service          twilio or signalwire -- default: signalwire
+        -f,--from             originating phone number -- default: number in .env file
+        -t,--to               destination phone number
+        -m,--message          message to be sent
+        -h,--help             display usage help
+
+EXAMPLE
+
+    $ prco-text --to 415-222-3333 --message 'hello,
+    Your car is ready :)
+
+    PRCO
+    415-555-1212'
+
+
+  ",
+  "options": Object {
+    "_": Array [],
+    "h": "",
+    "help": "",
+    "s": "signalwire",
+    "service": "signalwire",
+  },
+}
+`;
+
+exports[`prco-text invalid options when invalid 'from' option should show error and usage 1`] = `
+Object {
+  "error": [Error: Missing 'to' option.
+],
+  "errorMessage": "Missing 'to' option.
+
+
+USAGE
+
+    prco-text [options]
+
+    OPTIONS
+
+        -c,--config_env_file  location of file containing environment variables
+                              defaults to $HOME/protected/prco-text-env
+        -s,--service          twilio or signalwire -- default: signalwire
+        -f,--from             originating phone number -- default: number in .env file
+        -t,--to               destination phone number
+        -m,--message          message to be sent
+        -h,--help             display usage help
+
+EXAMPLE
+
+    $ prco-text --to 415-222-3333 --message 'hello,
+    Your car is ready :)
+
+    PRCO
+    415-555-1212'
+
+
+  ",
+  "options": Object {
+    "_": Array [],
+    "from": "+16505297726",
+    "s": "signalwire",
+    "service": "signalwire",
+  },
+}
+`;
+
+exports[`prco-text invalid options when invalid 'from' option should show error and usage 2`] = `
+Object {
+  "error": [Error: Missing 'to' option.
+],
+  "errorMessage": "Missing 'to' option.
+
+
+USAGE
+
+    prco-text [options]
+
+    OPTIONS
+
+        -c,--config_env_file  location of file containing environment variables
+                              defaults to $HOME/protected/prco-text-env
+        -s,--service          twilio or signalwire -- default: signalwire
+        -f,--from             originating phone number -- default: number in .env file
+        -t,--to               destination phone number
+        -m,--message          message to be sent
+        -h,--help             display usage help
+
+EXAMPLE
+
+    $ prco-text --to 415-222-3333 --message 'hello,
+    Your car is ready :)
+
+    PRCO
+    415-555-1212'
+
+
+  ",
+  "options": Object {
+    "_": Array [],
+    "f": " 555",
+    "from": " 555",
+    "s": "signalwire",
+    "service": "signalwire",
+  },
+}
+`;
+
+exports[`prco-text invalid options when invalid 'message' option should show error and usage 1`] = `
+Object {
+  "error": [Error: Missing 'to' option.
+],
+  "errorMessage": "Missing 'to' option.
+
+
+USAGE
+
+    prco-text [options]
+
+    OPTIONS
+
+        -c,--config_env_file  location of file containing environment variables
+                              defaults to $HOME/protected/prco-text-env
+        -s,--service          twilio or signalwire -- default: signalwire
+        -f,--from             originating phone number -- default: number in .env file
+        -t,--to               destination phone number
+        -m,--message          message to be sent
+        -h,--help             display usage help
+
+EXAMPLE
+
+    $ prco-text --to 415-222-3333 --message 'hello,
+    Your car is ready :)
+
+    PRCO
+    415-555-1212'
+
+
+  ",
+  "options": Object {
+    "_": Array [],
+    "from": "+16505297726",
+    "s": "signalwire",
+    "service": "signalwire",
+  },
+}
+`;
+
+exports[`prco-text invalid options when invalid 'to' option should show error and usage 1`] = `
+Object {
+  "error": [Error: Missing 'to' option.
+],
+  "errorMessage": "Missing 'to' option.
+
+
+USAGE
+
+    prco-text [options]
+
+    OPTIONS
+
+        -c,--config_env_file  location of file containing environment variables
+                              defaults to $HOME/protected/prco-text-env
+        -s,--service          twilio or signalwire -- default: signalwire
+        -f,--from             originating phone number -- default: number in .env file
+        -t,--to               destination phone number
+        -m,--message          message to be sent
+        -h,--help             display usage help
+
+EXAMPLE
+
+    $ prco-text --to 415-222-3333 --message 'hello,
+    Your car is ready :)
+
+    PRCO
+    415-555-1212'
+
+
+  ",
+  "options": Object {
+    "_": Array [],
+    "from": "+16505297726",
+    "s": "signalwire",
+    "service": "signalwire",
+  },
+}
+`;
+
+exports[`prco-text invalid options when invalid 'to' option should show error and usage 2`] = `
+Object {
+  "error": [Error: Missing 'message' option.
+],
+  "errorMessage": "Missing 'message' option.
+
+
+USAGE
+
+    prco-text [options]
+
+    OPTIONS
+
+        -c,--config_env_file  location of file containing environment variables
+                              defaults to $HOME/protected/prco-text-env
+        -s,--service          twilio or signalwire -- default: signalwire
+        -f,--from             originating phone number -- default: number in .env file
+        -t,--to               destination phone number
+        -m,--message          message to be sent
+        -h,--help             display usage help
+
+EXAMPLE
+
+    $ prco-text --to 415-222-3333 --message 'hello,
+    Your car is ready :)
+
+    PRCO
+    415-555-1212'
+
+
+  ",
+  "options": Object {
+    "_": Array [],
+    "from": "+16505297726",
+    "s": "signalwire",
+    "service": "signalwire",
+    "t": " 555",
+    "to": " 555",
+  },
+}
+`;
+
+exports[`prco-text invalid options when invalid service option (not wis or oneguard) should show error and usage 1`] = `
+Object {
+  "error": [Error: Invalid service: use twilio or signalwire.
+],
+  "errorMessage": "Invalid service: use twilio or signalwire.
+
+
+USAGE
+
+    prco-text [options]
+
+    OPTIONS
+
+        -c,--config_env_file  location of file containing environment variables
+                              defaults to $HOME/protected/prco-text-env
+        -s,--service          twilio or signalwire -- default: signalwire
+        -f,--from             originating phone number -- default: number in .env file
+        -t,--to               destination phone number
+        -m,--message          message to be sent
+        -h,--help             display usage help
+
+EXAMPLE
+
+    $ prco-text --to 415-222-3333 --message 'hello,
+    Your car is ready :)
+
+    PRCO
+    415-555-1212'
+
+
+  ",
+  "options": Object {
+    "_": Array [],
+    "s": " foo",
+    "service": " foo",
+  },
+}
+`;
+
+exports[`prco-text invalid options when missing config_env_file  should show error and usage 1`] = `
+Object {
+  "error": [Error: Missing env file:  /foo],
+  "errorMessage": "Missing env file:  /foo
+
+USAGE
+
+    prco-text [options]
+
+    OPTIONS
+
+        -c,--config_env_file  location of file containing environment variables
+                              defaults to $HOME/protected/prco-text-env
+        -s,--service          twilio or signalwire -- default: signalwire
+        -f,--from             originating phone number -- default: number in .env file
+        -t,--to               destination phone number
+        -m,--message          message to be sent
+        -h,--help             display usage help
+
+EXAMPLE
+
+    $ prco-text --to 415-222-3333 --message 'hello,
+    Your car is ready :)
+
+    PRCO
+    415-555-1212'
+
+
+  ",
+  "options": Object {},
+}
+`;
+
+exports[`prco-text invalid options when no options given should provide default options and show error and usage 1`] = `
+Object {
+  "error": [Error: Missing 'to' option.
+],
+  "errorMessage": "Missing 'to' option.
+
+
+USAGE
+
+    prco-text [options]
+
+    OPTIONS
+
+        -c,--config_env_file  location of file containing environment variables
+                              defaults to $HOME/protected/prco-text-env
+        -s,--service          twilio or signalwire -- default: signalwire
+        -f,--from             originating phone number -- default: number in .env file
+        -t,--to               destination phone number
+        -m,--message          message to be sent
+        -h,--help             display usage help
+
+EXAMPLE
+
+    $ prco-text --to 415-222-3333 --message 'hello,
+    Your car is ready :)
+
+    PRCO
+    415-555-1212'
+
+
+  ",
+  "options": Object {
+    "_": Array [],
+    "from": "+16505297726",
+    "s": "signalwire",
+    "service": "signalwire",
+  },
+}
+`;
+
+exports[`prco-text valid options when all options valid should show response from server 1`] = `
+"---
+service: signalwire
+sid: 9db9e771-04d7-4222-a5a3-79fda040bf70
+api_version: 2010-04-01
+date_created: Mon May 04 2020 01:43:06 GMT-0700 (Pacific Daylight Time)
+date_sent: null
+direction: outbound-api
+status: queued
+price: null
+price_unit: USD
+from: +16505297726
+to: +14159353327
+body: booya
+
+      "
+`;

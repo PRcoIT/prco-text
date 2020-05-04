@@ -18,9 +18,8 @@ const signalwireSend = ({
       to,
       body: message,
     })
-    .then((message) =>
-      console.log(
-        `---
+    .then((message) => {
+      const response = `---
 service: signalwire
 sid: ${message.sid}
 api_version: ${message.apiVersion}
@@ -34,9 +33,10 @@ from: ${message.from}
 to: ${message.to}
 body: ${message.body}
 
-      `
-      )
-    )
+      `;
+
+      return response;
+    })
     .catch((e) => console.log(e));
 };
 

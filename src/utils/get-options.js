@@ -33,10 +33,11 @@ EXAMPLE
   return message;
 };
 
-const abort = (message) => {
+const abort = (message, options = {}) => {
   throw {
     errorMessage: `${message}\n${usage()}`,
     error: new Error(message),
+    options,
   };
 };
 
@@ -84,10 +85,10 @@ const validatedOptions = async () => {
 
   let reason = "";
 
-  if (options.help !== undefined) abort("");
+  if (options.help !== undefined) abort("", options);
 
   if (options.service !== "signalwire" && options.service !== "twilio") {
-    reason += "Invalid service: use twilio or signalwire.\n";
+    abort("Invalid service: use twilio or signalwire.\n", options);
   }
 
   const defaultFrom = options.service === "signalwire" ? signalwireFrom : twilioFrom;
@@ -95,7 +96,7 @@ const validatedOptions = async () => {
   options.from = from;
 
   ["from", "to", "message"].forEach((option) => {
-    if (!options[option]) abort(`Missing '${option}' option.\n`);
+    if (!options[option]) abort(`Missing '${option}' option.\n`, options);
   });
 
   if (from.length < 10 || !validator.isMobilePhone(from)) {
@@ -106,7 +107,7 @@ const validatedOptions = async () => {
     reason += `Invalid 'to' field: invalid phone format: ${to}\n`;
   }
 
-  if (reason) abort(reason);
+  if (reason) abort(reason, options);
 
   return { ...envVars, service, from, to, message };
 };

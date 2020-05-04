@@ -7,9 +7,8 @@ const twilioSend = ({ twilioAccountSid, twilioAuthToken, from, to, message }) =>
       to,
       body: message,
     })
-    .then((message) =>
-      console.log(
-        `---
+    .then((message) => {
+      const response = `---
 service: twilio
 sid: ${message.sid}
 api_version: ${message.apiVersion}
@@ -24,9 +23,10 @@ to: ${message.to}
 body: ${message.body}
 
 
-    `
-      )
-    )
+    `;
+
+      return response;
+    })
     .catch((e) => console.log(e));
 };
 
