@@ -4,13 +4,11 @@ A utility that allows texting.
 
 ## Installation
 
-    npm install @cogent-labs/prco-text
+    npm install -g @cogent-labs/prco-text
 
 ## Configuration
 
-Signup and configure signalwire and twilio accounts
-
-Configure .env file
+Add your configuration via environment variables to the default location: `$HOME/protected/prco-text-env`
 
     # TWILIO
     twilioAccountSid=xxxxx
@@ -24,6 +22,8 @@ Configure .env file
     signalwireProjectId=xxxxx
     signalwireApiToken=xxxxx
 
+> You can use the `--config_env_file` option to configure another location if you like.
+
 ## Usage
 
     USAGE
@@ -32,11 +32,13 @@ Configure .env file
 
         OPTIONS
 
-            -s,--service   twilio or signalwire -- default: signalwire
-            -f,--from      originating phone number -- default: number in .env file
-            -t,--to        destination phone number
-            -m,--message   message to be sent
-            -h,--help      display usage help
+            -c,--config_env_file    location of file containing environment variables
+                                    defaults to $HOME/protected/prco-text-env
+            -h,--help               display usage help
+            -s,--service            twilio or signalwire -- default: signalwire
+            -f,--from               originating phone number -- default: number in .env file
+            -t,--to                 destination phone number
+            -m,--message            message to be sent
 
     EXAMPLE
 

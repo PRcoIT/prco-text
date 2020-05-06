@@ -1,35 +1,34 @@
 const getOptions = require("./get-options").getOptions;
 
+const getCommandOptions = (options) => {
+  const commandOptions = {
+    language: "node",
+    command: "prco-text",
+    from: "415-935-3327",
+    to: "415-935-3327",
+    message: "hi",
+  };
+
+  Object.keys(options).forEach((option) => {
+    commandOptions[option] = options[option];
+  });
+
+  const result = [
+    commandOptions["language"],
+    commandOptions["command"],
+    "--from",
+    commandOptions["from"],
+    "--to",
+    commandOptions["to"],
+    "--message",
+    commandOptions["message"],
+  ];
+
+  return result;
+};
+
 describe("get-options", () => {
   let response;
-  let commandOptions;
-
-  const getCommandOptions = (options) => {
-    const commandOptions = {
-      language: "node",
-      command: "prco-check-status",
-      from: "415-935-3327",
-      to: "415-935-3327",
-      message: "hi",
-    };
-
-    Object.keys(options).forEach((option) => {
-      commandOptions[option] = options[option];
-    });
-
-    const result = [
-      commandOptions["language"],
-      commandOptions["command"],
-      "--from",
-      commandOptions["from"],
-      "--to",
-      commandOptions["to"],
-      "--message",
-      commandOptions["message"],
-    ];
-
-    return result;
-  };
 
   beforeEach(() => {
     response = "";
@@ -38,7 +37,7 @@ describe("get-options", () => {
   describe("invalid options", () => {
     describe("when command given no options", () => {
       it("should produce error message and show usage", async () => {
-        process.argv = ["node", "prco-check-status"];
+        process.argv = ["node", "prco-text"];
         getOptions().catch(async (e) => {
           expect(e).toMatchSnapshot();
         });
@@ -47,7 +46,7 @@ describe("get-options", () => {
 
     describe("when config_env_file not found", () => {
       it("should show error and usage", async () => {
-        process.argv = ["node", "prco-check-status", "-c /foo"];
+        process.argv = ["node", "prco-text", "-c /foo"];
         getOptions().catch(async (e) => {
           expect(e).toMatchSnapshot();
         });
@@ -56,7 +55,7 @@ describe("get-options", () => {
 
     describe("when command given invalid service option (not wis or oneguard)", () => {
       it("should show error and usage", async () => {
-        process.argv = ["node", "prco-check-status", "-s foo"];
+        process.argv = ["node", "prco-text", "-s foo"];
         getOptions().catch(async (e) => {
           expect(e).toMatchSnapshot();
         });
@@ -65,12 +64,12 @@ describe("get-options", () => {
 
     describe("when command given invalid 'from' option", () => {
       it("should show error and usage", async () => {
-        process.argv = ["node", "prco-check-status"];
+        process.argv = ["node", "prco-text"];
         getOptions().catch(async (e) => {
           expect(e).toMatchSnapshot();
         });
 
-        process.argv = ["node", "prco-check-status", "-f 555"];
+        process.argv = ["node", "prco-text", "-f 555"];
         getOptions().catch(async (e) => {
           expect(e).toMatchSnapshot();
         });
@@ -79,12 +78,12 @@ describe("get-options", () => {
 
     describe("when comand given invalid 'to' option", () => {
       it("should show error and usage", async () => {
-        process.argv = ["node", "prco-check-status"];
+        process.argv = ["node", "prco-text"];
         getOptions().catch(async (e) => {
           expect(e).toMatchSnapshot();
         });
 
-        process.argv = ["node", "prco-check-status", "-t 555"];
+        process.argv = ["node", "prco-text", "-t 555"];
         getOptions().catch(async (e) => {
           expect(e).toMatchSnapshot();
         });
@@ -93,7 +92,7 @@ describe("get-options", () => {
 
     describe("when command given invalid 'message' option", () => {
       it("should show error and usage", async () => {
-        process.argv = ["node", "prco-check-status"];
+        process.argv = ["node", "prco-text"];
         getOptions().catch(async (e) => {
           expect(e).toMatchSnapshot();
         });
@@ -164,7 +163,7 @@ describe("get-options", () => {
   describe("valid options", () => {
     describe("when command given help option", () => {
       it("should only display usage", async () => {
-        process.argv = ["node", "prco-check-status", "-h"];
+        process.argv = ["node", "prco-text", "-h"];
         getOptions().catch(async (e) => {
           expect(e).toMatchSnapshot();
         });
@@ -173,7 +172,7 @@ describe("get-options", () => {
 
     describe("when comand given all valid options", () => {
       it("should return object containing the valid options", async () => {
-        process.argv = ["node", "prco-check-status", "-t", "+14159353327", "-m", "booya"];
+        process.argv = ["node", "prco-text", "-t", "+14159353327", "-m", "booya"];
         response = await getOptions();
         response.twilioAccountSid = "hidden";
         response.twilioAuthToken = "hidden";
