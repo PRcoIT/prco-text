@@ -174,11 +174,17 @@ describe("get-options", () => {
       it("should return object containing the valid options", async () => {
         process.argv = ["node", "prco-text", "-t", "+14159353327", "-m", "booya"];
         response = await getOptions();
-        response.twilioAccountSid = "hidden";
-        response.twilioAuthToken = "hidden";
-        response.signalwireSpaceUrl = "hidden";
-        response.signalwireProjectId = "hidden";
-        response.signalwireApiToken = "hidden";
+
+        [
+          "twilioAccountSid",
+          "twilioAuthToken",
+          "signalwireSpaceUrl",
+          "signalwireProjectId",
+          "signalwireApiToken",
+        ].forEach((field) => {
+          expect(field.length).toBeGreaterThan(5);
+          response[field] = "hidden";
+        });
 
         expect(response).toMatchSnapshot();
       });
