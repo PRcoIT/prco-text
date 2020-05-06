@@ -20,6 +20,7 @@
     "@signalwire/node": "^2.3.3",
     "dotenv": "^8.2.0",
     "minimist": "^1.2.5",
+    "phone": "^2.4.10",
     "twilio": "^3.42.2",
     "validator": "^13.0.0"
   },

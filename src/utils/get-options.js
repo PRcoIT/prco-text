@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const parseArgs = require("minimist");
 const validator = require("validator");
+const phone = require("phone");
 
 const usage = () => {
   const message = `
@@ -99,17 +100,22 @@ const validatedOptions = async () => {
     if (!options[option]) abort(`Missing '${option}' option.\n`, options);
   });
 
-  if (from.length < 10 || !validator.isMobilePhone(from)) {
-    reason += `Invalid 'from' field: invalid phone format: ${from}\n`;
+  options.from = phone(options.from, "")[0];
+  options.to = phone(options.to, "")[0];
+
+  if (!options.from || !validator.isMobilePhone(options.from, "", { strictMode: true })) {
+    reason += `Invalid 'from' field: invalid phone format: ${options.f}\n`;
   }
 
-  if (to.length < 10 || !validator.isMobilePhone(to)) {
-    reason += `Invalid 'to' field: invalid phone format: ${to}\n`;
+  if (!options.to || !validator.isMobilePhone(options.to, "", { strictMode: true })) {
+    reason += `Invalid 'to' field: invalid phone format: ${options.t}\n`;
   }
 
   if (reason) abort(reason, options);
 
-  return { ...envVars, service, from, to, message };
+  const result = { ...envVars, service, from: options.from, to: options.to, message };
+
+  return result;
 };
 
 const getOptions = async () => validatedOptions();
