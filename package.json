@@ -8,7 +8,7 @@
     "access": "public"
   },
   "bin": {
-    "prcoText": "./src/prco-text.js"
+    "prco-text": "./src/prco-text.js"
   },
   "scripts": {
     "test": "jest"
