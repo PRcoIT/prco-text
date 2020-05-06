@@ -76,9 +76,9 @@ const validatedOptions = async () => {
   const config_env_file =
     options.config_env_file || path.join(process.env.HOME, "protected", "prco-text-env");
 
-  !fs.existsSync(config_env_file)
-    ? abort(`Missing env file: ${config_env_file}`)
-    : require("dotenv").config(config_env_file);
+  if (!fs.existsSync(config_env_file)) abort(`Missing env file: ${config_env_file}`);
+
+  require("dotenv").config({ path: config_env_file });
 
   const envVars = await validatedEnv();
   const { twilioFrom, signalwireFrom } = envVars;
