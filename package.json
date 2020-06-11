@@ -2,7 +2,7 @@
   "name": "@cogent-labs/prco-text",
   "version": "1.0.3",
   "description": "",
-  "main": "index.js",
+  "main": "./src/config/get-options.js",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
