@@ -1,4 +1,4 @@
-const twilioSend = ({ twilioAccountSid, twilioAuthToken, from, to, message }) => {
+const twilioSend = ({ from, to, message, env: { twilioAccountSid, twilioAuthToken } }) => {
   const client = require("twilio")(twilioAccountSid, twilioAuthToken);
 
   return client.messages

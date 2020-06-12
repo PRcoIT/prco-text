@@ -183,8 +183,6 @@ const getOptions = async () => {
     .then(transformOptions)
     .then(validateOptions)
     .then((options) => {
-      if (!isRunningTests) console.log("RESOLVED");
-
       return options;
     })
     .catch((e) => {

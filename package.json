@@ -2,15 +2,17 @@
   "name": "@cogent-labs/prco-text",
   "version": "1.0.3",
   "description": "",
-  "main": "./src/config/get-options.js",
+  "main": "./scripts/prco-text.js",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
   "bin": {
-    "prco-text": "./src/prco-text.js"
+    "prco-text": "./scripts/prco-text.js"
   },
   "scripts": {
+    "server-start": "forever start src/text-inbound/twilio-inbound-server.js -m 3",
+    "server-stop": "forever stop src/text-inbound/twilio-inbound-server.js",
     "test": "jest"
   },
   "keywords": [],
@@ -19,7 +21,10 @@
   "dependencies": {
     "@signalwire/node": "^2.3.3",
     "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "forever": "^3.0.0",
     "minimist": "^1.2.5",
+    "npm": "^6.14.5",
     "phone": "^2.4.10",
     "twilio": "^3.42.2",
     "validator": "^13.0.0"

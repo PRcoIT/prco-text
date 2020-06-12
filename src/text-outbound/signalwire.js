@@ -1,10 +1,8 @@
 const signalwireSend = ({
-  signalwireProjectId,
-  signalwireApiToken,
-  signalwireSpaceUrl,
   from,
   to,
   message,
+  env: { signalwireProjectId, signalwireApiToken, signalwireSpaceUrl },
 }) => {
   const { RestClient } = require("@signalwire/node");
 
