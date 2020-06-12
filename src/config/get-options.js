@@ -17,6 +17,7 @@ const requiredOptions = {
 const requiredEnvVars = {
   signalwire: ["signalwireFrom", "signalwireSpaceUrl", "signalwireProjectId", "signalwireApiToken"],
   twilio: ["twilioAccountSid", "twilioAuthToken", "twilioFrom"],
+  server: ["optOut", "optIn", "optNone"],
 };
 
 const abort = (message, options = {}) => {
@@ -71,7 +72,11 @@ const getEnvOptions = async (options) => {
     return result;
   };
 
-  const requiredList = options.isUsingTwilio ? requiredEnvVars.twilio : requiredEnvVars.signalwire;
+  const requiredList = [
+    ...(options.isUsingTwilio ? requiredEnvVars.twilio : requiredEnvVars.signalwire),
+    ...(options.serverCommand === "start" ? requiredEnvVars.server : []),
+  ];
+
   processDotenvFile(options);
   options.env = extractEnvVars(requiredList);
 
@@ -109,7 +114,11 @@ const validateOptions = (options) => {
 
   const validateEnvVarsExist = () => {
     try {
-      const whitelist = options.isUsingTwilio ? requiredEnvVars.twilio : requiredEnvVars.signalwire;
+      const whitelist = [
+        ...(options.isUsingTwilio ? requiredEnvVars.twilio : requiredEnvVars.signalwire),
+        ...(options.serverCommand === "start" ? requiredEnvVars.server : []),
+      ];
+
       return hasProps(whitelist, options.env);
     } catch (e) {
       abort(`Missing env var: '${e.missingProp}'`, options);
