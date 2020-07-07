@@ -108,7 +108,7 @@ USAGE
 
         START THE INCOMING SERVER
 
-            prco-text -server-command start
+            prco-text --server-command start
 
         To be continued...
 
