@@ -75,7 +75,7 @@ Add your configuration via environment variables to the default location:
 
             -h,--help             display usage help
 
-## EXAMPLES
+## Examples
 
     SENDING OUTBOUND TEXT MESSAGES
 
