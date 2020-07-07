@@ -3,6 +3,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const parseArgs = require("minimist");
 
+const incomingTextFile = "${process.env.HOME}/protected/incoming.txt";
+const stream = fs.createWriteStream(incomingTextFile, { flags: "a" });
+
 const options = parseArgs(process.argv.slice(2), {
   string: ["opt-out", "opt-in", "opt-none"],
 });
@@ -19,6 +22,8 @@ const messages = {
   optNone: options["opt-none"],
 };
 
+// HELPER FUNCTIONS
+
 const twilioReply = (res, message) => {
   const twiml = new MessagingResponse();
 
@@ -27,17 +32,22 @@ const twilioReply = (res, message) => {
   res.end(twiml.toString());
 };
 
-const getTwilioSend = (res) => (message) => twilioReply(res, message);
+const getTwilioSendReply = (res) => (message) => twilioReply(res, message);
+
+const appendIncomingTextFile = (json) => stream.write(JSON.stringify(json, null, 2));
+
+// API ENDPOINTS
 
 app.post("/sms", (req, res) => {
-  const twilioSend = getTwilioSend(res);
+  const twilioSendReply = getTwilioSendReply(res);
   const reqDataObject = { ...req.body };
   const isOptingOut = RegExp(/STOP/).test(reqDataObject.Body);
   const isOptingIn = RegExp(/START/).test(reqDataObject.Body);
   const messageKey = isOptingOut ? "optOut" : isOptingIn ? "optIn" : "optNone";
   const replyMessage = messages[messageKey];
 
-  twilioSend(replyMessage);
+  appendIncomingTextFile(reqDataObject);
+  twilioSendReply(replyMessage);
 });
 
 app.get("/", (req, res) => {

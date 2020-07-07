@@ -1,52 +1,116 @@
 # @cogent-labs/prco-text
 
-A utility that allows texting.
+This is a utility that facilitates both outbound and inbound text messages.
 
 ## Installation
 
+To install:
+
     npm install -g @cogent-labs/prco-text
+
+To check the version:
+
+    npm -g ls @cogent-labs/prco-text --depth 0
+
+To upgrade:
+
+    npm upgrade -g @cogent-labs/prco-text
 
 ## Configuration
 
-Add your configuration via environment variables to the default location: `$HOME/protected/prco-text-env`
+Your configuration information is stored in this file:
 
-    # TWILIO
-    twilioAccountSid=xxxxx
-    twilioAuthToken=xxxxx
-    twilioFrom=xxxxx
+> Note \$HOME references your home directory
 
+    $HOME/protected/prco-text-env
 
-    # SIGNAL WIRE
-    signalwireFrom=xxxxx
-    signalwireSpaceUrl=xxxxx
-    signalwireProjectId=xxxxx
-    signalwireApiToken=xxxxx
+Add your configuration via environment variables to the default location:
 
-> You can use the `--config_env_file` option to configure another location if you like.
+> Note the use of double-quotes around all values
+
+    # TWILIO CREDENTIALS
+    twilioAccountSid="<twilio-sid>"
+    twilioAuthToken="<twilio-auth-token>"
+
+    # COMPANY PHONE
+    twilioFrom="<company-phone>"
+
+    # TEXT REPLIES TO INCOMING MESSAGES
+    optOut="You have successfully been unsubscribed. You will not receive any more messages from this number. Reply START to resubscribe."
+
+    optIn="You have successfully been re-subscribed to messages from this number. Reply STOP to unsubscribe. Msg&Data Rates May Apply.
+    Your message has been received. Thank you!"
+
+    optNone="Your message has been received. Thank you!"
+
+| config variable  | description                       |
+| ---------------- | --------------------------------- |
+| twilioAccountSid | Twilio SID                        |
+| twilioAuthToken  | Twilio Auth Token                 |
+| twilioFrom       | Company Phone                     |
+| optOut           | Text response to opt-out request  |
+| optIn            | Text response to opt-in request   |
+| optNone          | Text response to incoming message |
 
 ## Usage
 
-    USAGE
+USAGE
 
-        prco-text [options]
+    prco-text [options]
 
-        OPTIONS
+    OPTIONS
 
-            -c,--config_env_file    location of file containing environment variables
-                                    defaults to $HOME/protected/prco-text-env
-            -h,--help               display usage help
-            -s,--service            twilio or signalwire -- default: signalwire
-            -f,--from               originating phone number -- default: number in .env file
-            -t,--to                 destination phone number
-            -m,--message            message to be sent
+        -c,--config_env_file  location of file containing environment variables
+                              default: $HOME/protected/prco-text-env
 
-    EXAMPLE
+        --server-command      choices: start, stop
+
+        -s,--service          service to use. choices: twilio or signalwire -- default: twilio
+
+        -f,--from             source phone number. default: 'from' in the .env file
+
+        -t,--to               target phone number.
+
+        -m,--message          message to be sent
+
+        -h,--help             display usage help
+
+## EXAMPLES
+
+    SENDING OUTBOUND TEXT MESSAGES
 
         $ prco-text --to 415-222-3333 --message 'hello,
         Your car is ready :)
 
         PRCO
         415-555-1212'
+
+
+    RECEIVING INBOUND TEXT MESSAGES
+
+        CONFIGURE TWILIO -- only do this once
+
+            collect credentials (account-sid, auth-token)
+
+                -- login to twilio website with prco credentials
+                -- https://www.twilio.com/console
+
+            login with twilio command line tool
+
+                twilio login
+                    -- enter account SID
+                    -- enter auth token
+
+            configure twilio to use your local server
+
+                twilio phone-numbers:update "+19252593760" --sms-url="http://localhost:1337/sms"
+
+
+        START THE INCOMING SERVER
+
+            prco-text -server-command start
+
+        To be continued...
 
 ## Author
 
