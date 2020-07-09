@@ -88,7 +88,7 @@ Add your configuration via environment variables to the default location:
 
     RECEIVING INBOUND TEXT MESSAGES
 
-        CONFIGURE TWILIO -- only do this once
+        CONFIGURE TWILIO
 
             collect credentials (account-sid, auth-token)
 
@@ -100,6 +100,7 @@ Add your configuration via environment variables to the default location:
                 twilio login
                     -- enter account SID
                     -- enter auth token
+                    -- shorthand identifier (any name)
 
             configure twilio to use your local server
 

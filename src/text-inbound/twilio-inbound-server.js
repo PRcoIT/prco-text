@@ -1,9 +1,10 @@
 const http = require("http");
+const fs = require("fs");
 const express = require("express");
 const bodyParser = require("body-parser");
 const parseArgs = require("minimist");
 
-const incomingTextFile = "${process.env.HOME}/protected/incoming.txt";
+const incomingTextFile = `${process.env.HOME}/protected/incoming.txt`;
 const stream = fs.createWriteStream(incomingTextFile, { flags: "a" });
 
 const options = parseArgs(process.argv.slice(2), {
