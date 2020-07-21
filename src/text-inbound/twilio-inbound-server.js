@@ -46,6 +46,7 @@ app.post("/sms", (req, res) => {
   const isOptingIn = RegExp(/START/).test(reqDataObject.Body);
   const messageKey = isOptingOut ? "optOut" : isOptingIn ? "optIn" : "optNone";
   const replyMessage = messages[messageKey];
+  reqDataObject.replyMessage = replyMessage;
 
   appendIncomingTextFile(reqDataObject);
   twilioSendReply(replyMessage);
