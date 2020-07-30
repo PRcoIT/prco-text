@@ -1,142 +1,75 @@
-# @cogent-labs/prco-text
+# PRCO TEXT
 
-This is a utility that facilitates both outbound and inbound text messages.
+prco-text SMS inbound/outbound messaging.
 
-## Installation
+## FEATURES AND COMPONENTS
 
-To install:
+prco-text features:
 
-    npm install -g @cogent-labs/prco-text
+- inbound and outbound messaging
+- subscribe/unsubscribe with custom opt-in, opt-out, help wording.
+- incoming message custom reply
+- incoming message log
 
-To check the version:
+prco-text components:
 
-    npm -g ls @cogent-labs/prco-text --depth 0
+- prco-text command line interface for easy control
+- prco-text server for communicating with twilio
 
-To upgrade:
-
-    npm upgrade -g @cogent-labs/prco-text
-
-## Configuration
-
-Your configuration information is stored in this file:
-
-> Note \$HOME references your home directory
-
-    $HOME/protected/prco-text-env
-
-Add your configuration via environment variables to the default location:
-
-> Note the use of double-quotes around all values
-
-    # TWILIO CREDENTIALS
-    twilioAccountSid="<twilio-sid>"
-    twilioAuthToken="<twilio-auth-token>"
-
-    # COMPANY PHONE
-    twilioFrom="<company-phone>"
-
-    # TEXT REPLIES TO INCOMING MESSAGES
-    optOut="You have successfully been unsubscribed. You will not receive any more messages from this number. Reply START to resubscribe."
-
-    optIn="You have successfully been re-subscribed to messages from this number. Reply STOP to unsubscribe. Msg&Data Rates May Apply.
-    Your message has been received. Thank you!"
-
-    optNone="Your message has been received. Thank you!"
-
-| config variable  | description                       |
-| ---------------- | --------------------------------- |
-| twilioAccountSid | Twilio SID                        |
-| twilioAuthToken  | Twilio Auth Token                 |
-| twilioFrom       | Company Phone                     |
-| optOut           | Text response to opt-out request  |
-| optIn            | Text response to opt-in request   |
-| optNone          | Text response to incoming message |
-
-## Usage
+## USAGE
 
     USAGE
 
-        prco-text [options]
+        prco-text
 
-        OPTIONS
+            OPTIONS
 
-            -c,--config_env_file  location of file containing environment variables
-                                default: $HOME/protected/prco-text-env
+            --start-server                  start prco-text server
+            --stop-server                   stop prco-text server
+            --config-service-name           create twilio messaging service
+            --config-service-phone-number   add phone number to twilio messaging service
+            --outbound-message              message to send
+            --target-phone-number           target phone number to send to
+            --get-incoming-messages         get incoming messages log
+            --clear-incoming-messages       clear incoming messages log
 
-            --server-command      choices: start, stop
+    EXAMPLE
 
-            -s,--service          service to use. choices: twilio or signalwire -- default: twilio
+        NOTE
 
-            -f,--from             source phone number. default: 'from' in the .env file
+            env file is located at "$HOME/protected/prco-text-env
 
-            -t,--to               target phone number.
+        ONE TIME SETUP
 
-            -m,--message          message to be sent
-
-            -h,--help             display usage help
-
-## Examples
-
-    SENDING OUTBOUND TEXT MESSAGES
-
-        $ prco-text --to 415-222-3333 --message 'hello,
-        Your car is ready :)
-
-        PRCO
-        415-555-1212'
-
-
-    RECEIVING INBOUND TEXT MESSAGES
-
-        CONFIGURE TWILIO
-
-            collect credentials (account-sid, auth-token)
-
-                -- login to twilio website with prco credentials
-                -- https://www.twilio.com/console
-
-            login with twilio command line tool
-
-                twilio login
-                    -- enter account SID
-                    -- enter auth token
-                    -- shorthand identifier (any name)
-
-            configure twilio to use your local server
-
-                twilio phone-numbers:update "+19252593760" --sms-url="http://localhost:1337/sms"
+            purchase Twilio account with an SMS capable number
+            use twilio console to update env file: twilioAccountSid, twilioAuthToken, twilioPhoneNumberSid
+            use prco-text to start server
+            use prco-text to configure service name and collect twilioServiceSid
+            add twilioServiceSid to env file
+            use prco-text stop then start server
+            use prco-text to configure service phone number
+            use twilio console to configure opt-in, opt-out, and help custom messages
+            use twilio console to configure webhook url i.e. https://prco-text/sms
 
 
-        START THE INCOMING SERVER
+        SEND TEXT MESSAGE
 
-            prco-text --server-command start
+            prco-text --outbound-message "Your inspection request is ready" --target-phone-number +14158761234
 
-        To be continued...
 
-## Author
+        GET INCOMING TEXT MESSAGES
 
-Frank Gutierrez
+            prco-text --get-incoming-messages
 
-npm.frankg@gmail.com
 
-## License
+        CLEAR INCOMING TEXT MESSAGES
 
-Copyright (c) 2020 Frank Gutierrez III
+            prco-text --clear-incoming-messages
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+> Note: prco-text server must be publicly accessible
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+## FEATURE REQUEST
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+SHOULD WE KEEP AN INCOMING MESSAGE LOG
+
+DOES IT HAVE SPAM CONTROL
