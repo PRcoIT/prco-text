@@ -43,13 +43,13 @@ prco-text components:
 
             purchase Twilio account with an SMS capable number
             use twilio console to update env file: twilioAccountSid, twilioAuthToken, twilioPhoneNumberSid
+            use twilio console to configure opt-in, opt-out, and help custom messages
+            use twilio console to configure webhook url i.e. https://prco-text/sms
             use prco-text to start server
             use prco-text to configure service name and collect twilioServiceSid
             add twilioServiceSid to env file
             use prco-text stop then start server
             use prco-text to configure service phone number
-            use twilio console to configure opt-in, opt-out, and help custom messages
-            use twilio console to configure webhook url i.e. https://prco-text/sms
 
 
         SEND TEXT MESSAGE
