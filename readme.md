@@ -58,7 +58,7 @@ prco-text components:
 
         STOP SERVER
 
-            prco-text --start-stop
+            prco-text --stop-server
 
 
         CONFIGURE SERVICE NAME
