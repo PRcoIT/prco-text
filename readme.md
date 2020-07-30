@@ -33,23 +33,42 @@ prco-text components:
             --get-incoming-messages         get incoming messages log
             --clear-incoming-messages       clear incoming messages log
 
-    EXAMPLE
 
-        NOTE
+    ONE TIME SETUP
 
-            env file is located at "$HOME/protected/prco-text-env
+        NOTE: env file is located at "$HOME/protected/prco-text-env
 
-        ONE TIME SETUP
+        purchase Twilio account with an SMS capable number
+        use twilio console to update env file: twilioAccountSid, twilioAuthToken, twilioPhoneNumberSid
+        use twilio console to configure opt-in, opt-out, and help custom messages
+        use twilio console to configure webhook url i.e. https://prco-text/sms
+        use prco-text to start server
+        use prco-text to configure service name and collect twilioServiceSid
+        add twilioServiceSid to env file
+        use prco-text stop then start server
+        use prco-text to configure service phone number
 
-            purchase Twilio account with an SMS capable number
-            use twilio console to update env file: twilioAccountSid, twilioAuthToken, twilioPhoneNumberSid
-            use twilio console to configure opt-in, opt-out, and help custom messages
-            use twilio console to configure webhook url i.e. https://prco-text/sms
-            use prco-text to start server
-            use prco-text to configure service name and collect twilioServiceSid
-            add twilioServiceSid to env file
-            use prco-text stop then start server
-            use prco-text to configure service phone number
+
+    EXAMPLES
+
+        START SERVER
+
+            prco-text --start-server
+
+
+        STOP SERVER
+
+            prco-text --start-stop
+
+
+        CONFIGURE SERVICE NAME
+
+            prco-text --config-service-name "PRCO MESSAGING SERVICE"
+
+
+        CONFIGURE SERVICE PHONE NUMBER
+
+            prco-text --config-service-phone-number
 
 
         SEND TEXT MESSAGE
