@@ -37,6 +37,7 @@ prco-text components:
     ONE TIME SETUP
 
         NOTE: env file is located at "$HOME/protected/prco-text-env
+        NOTE: prco-text server must be publicly accessible
 
         purchase Twilio account with an SMS capable number
         use twilio console to update env file: twilioAccountSid, twilioAuthToken, twilioPhoneNumberSid
@@ -84,8 +85,6 @@ prco-text components:
         CLEAR INCOMING TEXT MESSAGES
 
             prco-text --clear-incoming-messages
-
-> Note: prco-text server must be publicly accessible
 
 ## FEATURE REQUEST
 
