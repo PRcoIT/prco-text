@@ -1,48 +1,72 @@
 const usage = () => {
   const message = `
-USAGE
+    USAGE
 
-    prco-text [options]
+        prco-text
 
-    OPTIONS
+            OPTIONS
 
-        -c,--config_env_file  location of file containing environment variables
-                              default: $HOME/protected/prco-text-env
-
-        --server-command      choices: start, stop
-
-        -s,--service          service to use. choices: twilio or signalwire -- default: signalwire
-
-        -f,--from             source phone number. default: 'from' in the .env file
-
-        -t,--to               target phone number.
-
-        -m,--message          message to be sent
-
-        -h,--help             display usage help
+            --start-server                  start prco-text server
+            --stop-server                   stop prco-text server
+            --config-service-name           create twilio messaging service
+            --config-service-phone-number   add phone number to twilio messaging service
+            --outbound-message              message to send
+            --target-phone-number           target phone number to send to
+            --get-incoming-messages         get incoming messages log
+            --clear-incoming-messages       clear incoming messages log
 
 
-EXAMPLES
+    ONE TIME SETUP
 
-    SENDING A TEXT MESSAGE
+        NOTE: env file is located at "$HOME/protected/prco-text-env
+        NOTE: prco-text server must be publicly accessible
 
-        $ prco-text --to 415-222-3333 --message "hello,
-        Your car is ready :)
-
-        PRCO
-        415-555-1212"
-
-
-    START INBOUND SERVER
-
-        prco-text --server start
-
-
-    STOP INBOUND SERVER
-
-        prco-text --server stop
+        purchase Twilio account with an SMS capable number
+        use twilio console to update env file: twilioAccountSid, twilioAuthToken, twilioPhoneNumberSid
+        use twilio console to configure opt-in, opt-out, and help custom messages
+        use twilio console to configure webhook url i.e. https://prco-text/sms
+        use prco-text to start server
+        use prco-text to configure service name and collect twilioServiceSid
+        add twilioServiceSid to env file
+        use prco-text stop then start server
+        use prco-text to configure service phone number
 
 
+    EXAMPLES
+
+        START SERVER
+
+            prco-text --start-server
+
+
+        STOP SERVER
+
+            prco-text --stop-server
+
+
+        CONFIGURE SERVICE NAME
+
+            prco-text --config-service-name "PRCO MESSAGING SERVICE"
+
+
+        CONFIGURE SERVICE PHONE NUMBER
+
+            prco-text --config-service-phone-number
+
+
+        SEND TEXT MESSAGE
+
+            prco-text --outbound-message "Your inspection request is ready" --target-phone-number +14158761234
+
+
+        GET INCOMING TEXT MESSAGES
+
+            prco-text --get-incoming-messages
+
+
+        CLEAR INCOMING TEXT MESSAGES
+
+            prco-text --clear-incoming-messages
 
   `;
 

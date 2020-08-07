@@ -11,8 +11,8 @@
     "prco-text": "./scripts/prco-text.js"
   },
   "scripts": {
-    "server-start": "forever start src/text-inbound/twilio-inbound-server.js -m 3",
-    "server-stop": "forever stop src/text-inbound/twilio-inbound-server.js",
+    "server-start": "./scripts/server-start.sh",
+    "server-stop": "./scripts/server-stop.sh",
     "test": "jest"
   },
   "keywords": [],

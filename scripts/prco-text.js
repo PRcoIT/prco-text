@@ -1,31 +1,11 @@
+#!/usr/bin/env node
+
 const npm = require("npm");
-const { getOptions } = require("../src/config/get-options");
-const { twilioSend, signalwireSend } = require("../src/text-outbound");
+const { getCliOptions } = require("../src/config/get-cli-options");
+const { getFilteredObject } = require("../src/utils");
+const { usage } = require("../src/utils/usage");
 
 const isRunningTests = typeof jest !== "undefined";
-
-const handleInboundText = async (options) => {
-  const isServerStart = options.serverCommand === "start";
-
-  isServerStart
-    ? npm.load(() => npm.run("server-start", ...args))
-    : npm.load(() => npm.run("server-stop"));
-
-  console.log("options: ", options);
-  return options;
-};
-
-const handleOutboundText = async (options) => {
-  const response = options.isUsingTwilio
-    ? await twilioSend(options)
-    : await signalwireSend(options);
-
-  if (!isRunningTests) console.log(response);
-
-  return response;
-};
-
-// ###########################################
 
 const serviceBaseUrl = "https://ngrok.io/";
 
@@ -45,7 +25,7 @@ const fetchInfo = (fetchUrl, fetchOptions) => {
   });
 };
 
-const startServer = () => npm.load(() => npm.run("server-start", ...args));
+const startServer = () => npm.load(() => npm.run("server-start"));
 
 const stopServer = () => npm.load(() => npm.run("server-stop"));
 
@@ -87,14 +67,32 @@ const clearIncomingMessages = () => {
   return fetchInfo(fetchUrl, fetchOptions);
 };
 
-const prcoText = () => {
-  return Promise.resolve()
-    .then(getOptions)
-    .then((options) => {
-      const isServerCommand = !!options.serverCommand;
+const help = () => console.log(usage());
 
-      return isServerCommand ? handleInboundText(options) : handleOutboundText(options);
-    });
+const commandsMap = {
+  ["start-server"]: startServer,
+  ["stop-server"]: stopServer,
+  ["config-service-name"]: configServiceName,
+  ["config-service-phone-number"]: configServicePhoneNumber,
+  ["outbound-message"]: sendOutgoingMessage,
+  ["get-incoming-messages"]: getIncomingMessages,
+  ["clear-incoming-messages"]: clearIncomingMessages,
+  ["help"]: help,
+};
+
+const validCommands = Object.keys(commandsMap);
+
+const executeCommand = (options) => {
+  const args = Object.keys(options);
+  const isValidCommand = validCommands.some((e) => args.includes(e));
+  if (!isValidCommand) throw Error("Invalid command");
+  const command = validCommands.find((e) => args.includes(e));
+
+  return commandsMap[command](options);
+};
+
+const prcoText = () => {
+  return Promise.resolve().then(getCliOptions).then(executeCommand).catch(console.log);
 };
 
 prcoText();

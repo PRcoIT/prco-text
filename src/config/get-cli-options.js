@@ -7,18 +7,19 @@ const phone = require("phone");
 const { getFilteredObject, hasProps } = require("../utils");
 const { usage } = require("../utils/usage");
 
+const validOptions = [
+  "start-server",
+  "stop-server",
+  "configure-service-name",
+  "configure-service-phone-number",
+  "outbound-message",
+  "target-phone-number",
+  "get-incominng-messages",
+  "clear-incominng-messages",
+  "help",
+];
+
 const isRunningTests = typeof jest !== "undefined";
-
-const requiredOptions = {
-  outboundOptions: ["isUsingTwilio", "service", "from", "to", "message"],
-  inboundOptions: ["isUsingTwilio", "serverCommand", "service"],
-};
-
-const requiredEnvVars = {
-  signalwire: ["signalwireFrom", "signalwireSpaceUrl", "signalwireProjectId", "signalwireApiToken"],
-  twilio: ["twilioAccountSid", "twilioAuthToken", "twilioFrom"],
-  server: ["optOut", "optIn", "optNone"],
-};
 
 const abort = (message, options = {}) => {
   throw {
@@ -28,25 +29,14 @@ const abort = (message, options = {}) => {
   };
 };
 
-const getCliOptions = async () => {
+const processArgs = async () => {
   const options = parseArgs(process.argv.slice(2), {
-    string: ["config_env_file  ", "server-command", "service", "from", "to", "message", "help"],
-    alias: { config_env_file: "c", service: "s", from: "f", to: "t", message: "m", help: "h" },
-    default: { service: "twilio" },
+    string: validOptions,
   });
+  const whitelist = Object.keys(options).filter((o) => validOptions.includes(o));
+  const filteredOptions = getFilteredObject(options, whitelist);
 
-  options.isUsingTwilio = options.service === "twilio";
-  options.serverCommand = options["server-command"];
-
-  const originalOptions = { ...options };
-
-  const filterProps = (options, whitelist) => getFilteredObject(options, whitelist);
-
-  const result = options["server-command"]
-    ? filterProps(options, requiredOptions.inboundOptions)
-    : filterProps(options, requiredOptions.outboundOptions);
-
-  return result;
+  return filteredOptions;
 };
 
 const getEnvOptions = async (options) => {
@@ -185,22 +175,24 @@ const validateOptions = (options) => {
   return options;
 };
 
-const getOptions = async () => {
-  return Promise.resolve()
-    .then(getCliOptions)
-    .then(getEnvOptions)
-    .then(transformOptions)
-    .then(validateOptions)
-    .then((options) => {
-      return options;
-    })
-    .catch((e) => {
-      if (!isRunningTests) console.log(e.errorMessage);
+const getCliOptions = async () => {
+  return (
+    Promise.resolve()
+      .then(processArgs)
+      // .then(getEnvOptions)
+      // .then(transformOptions)
+      // .then(validateOptions)
+      .then((options) => {
+        return options;
+      })
+      .catch((e) => {
+        if (!isRunningTests) console.log(e.errorMessage);
 
-      throw e.error;
-    });
+        throw e.error;
+      })
+  );
 };
 
 module.exports = {
-  getOptions,
+  getCliOptions,
 };

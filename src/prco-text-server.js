@@ -5,6 +5,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const MessagingResponse = require("twilio").twiml.MessagingResponse;
 
+console.log("start");
+
 const getEnvVars = () => {
   const config_env_file = path.join(process.env.HOME, "protected", "prco-text-env");
   if (!fs.existsSync(config_env_file)) throwError(`Missing env file: ${config_env_file}`);
