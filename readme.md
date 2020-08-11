@@ -49,27 +49,29 @@ prco-text components:
             CONSOLE_VERIFIED_CALLER_IDS -- console > hashtag icon > Verified Caller IDs
 
 
+        SETUP PROCESS
+            purchase Twilio account with an SMS capable number
+            use twilio-site to update env file: twilioAccountSid, twilioAuthToken, twilioPhoneNumberSid
+                -- CONSOLE_HOME: twilioAccountSid, twilioAuthToken
+                -- CONSOLE_SERVICE_NUMBER: twilioPhoneNumberSid
+            use twilio-site to configure opt-in, opt-out, and help custom messages
+                -- CONSOLE_SERVICE_OPT_OUT: click the edit link
+            use twilio-site to configure webhook url
+                -- CONSOLE_SERVICE_WEBHOOK
+                    -- under incoming messages, send-a-webhook
+                    -- enter publicly accessible url with sms endpoint-- example: https://898e6154fc66.ngrok.io/sms
+            use prco-text to start server
+            use prco-text to configure service name and collect twilioServiceSid
+            add twilioServiceSid to env file
+            use prco-text stop then start server
+            use prco-text to configure service phone number
 
-        purchase Twilio account with an SMS capable number
-        use twilio-site to update env file: twilioAccountSid, twilioAuthToken, twilioPhoneNumberSid
-            -- CONSOLE_HOME: twilioAccountSid, twilioAuthToken
-            -- CONSOLE_SERVICE_NUMBER: twilioPhoneNumberSid
-        use twilio-site to configure opt-in, opt-out, and help custom messages
-            -- CONSOLE_SERVICE_OPT_OUT: click the edit link
-        use twilio-site to configure webhook url
-            -- CONSOLE_SERVICE_WEBHOOK
-                -- under incoming messages, send-a-webhook
-                -- enter publicly accessible url with sms endpoint-- example: https://898e6154fc66.ngrok.io/sms
-        use prco-text to start server
-        use prco-text to configure service name and collect twilioServiceSid
-        add twilioServiceSid to env file
-        use prco-text stop then start server
-        use prco-text to configure service phone number
 
-        USE NGROK TO MAKE PUBLIC
-        killall ngrok
-        ngrok http 1337
-        update prco-text baseUrl with nrgok url
+        HOW TO USE NGROK TO MAKE PUBLIC URL
+            NOTE: this is for demo purposes
+            killall ngrok
+            ngrok http 1337
+            update prco-text baseUrl with nrgok url
 
 
     EXAMPLES
