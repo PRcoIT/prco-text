@@ -39,15 +39,37 @@ prco-text components:
         NOTE: env file is located at "$HOME/protected/prco-text-env
         NOTE: prco-text server must be publicly accessible
 
+        NAVIGATING TO TWILIO CONSOLE LOCATIONS
+            CONSOLE_HOME -- console > home icon
+            CONSOLE_SERVICES -- console > chat icon > messaging service
+            CONSOLE_SERVICE -- console > chat icon > messaging service > service-name
+            CONSOLE_SERVICE_NUMBER -- console > chat icon > messaging service > service-name > sender-pool > number
+            CONSOLE_SERVICE_OPT_OUT -- console > chat icon > messaging service > service-name > Opt-Out Management
+            CONSOLE_SERVICE_WEBHOOK -- console > chat icon > messaging service > service-name > Integration
+            CONSOLE_VERIFIED_CALLER_IDS -- console > hashtag icon > Verified Caller IDs
+
+
+
         purchase Twilio account with an SMS capable number
-        use twilio console to update env file: twilioAccountSid, twilioAuthToken, twilioPhoneNumberSid
-        use twilio console to configure opt-in, opt-out, and help custom messages
-        use twilio console to configure webhook url i.e. https://prco-text/sms
+        use twilio-site to update env file: twilioAccountSid, twilioAuthToken, twilioPhoneNumberSid
+            -- CONSOLE_HOME: twilioAccountSid, twilioAuthToken
+            -- CONSOLE_SERVICE_NUMBER: twilioPhoneNumberSid
+        use twilio-site to configure opt-in, opt-out, and help custom messages
+            -- CONSOLE_SERVICE_OPT_OUT: click the edit link
+        use twilio-site to configure webhook url
+            -- CONSOLE_SERVICE_WEBHOOK
+                -- under incoming messages, send-a-webhook
+                -- enter publicly accessible url with sms endpoint-- example: https://898e6154fc66.ngrok.io/sms
         use prco-text to start server
         use prco-text to configure service name and collect twilioServiceSid
         add twilioServiceSid to env file
         use prco-text stop then start server
         use prco-text to configure service phone number
+
+        USE NGROK TO MAKE PUBLIC
+        killall ngrok
+        ngrok http 1337
+        update prco-text baseUrl with nrgok url
 
 
     EXAMPLES
@@ -86,7 +108,11 @@ prco-text components:
 
             prco-text --clear-incoming-messages
 
-## FEATURE REQUEST
+## TROUBLESHOOTING
+
+To kill all ngrok tunnels
+
+    killall ngrok
 
 - SHOULD WE KEEP AN INCOMING MESSAGE LOG
 - DOES IT HAVE SPAM CONTROL

@@ -1,28 +1,33 @@
 #!/usr/bin/env node
 
 const npm = require("npm");
+const fetch = require("node-fetch");
+
 const { getCliOptions } = require("../src/config/get-cli-options");
 const { getFilteredObject } = require("../src/utils");
 const { usage } = require("../src/utils/usage");
 
 const isRunningTests = typeof jest !== "undefined";
 
-const serviceBaseUrl = "https://ngrok.io/";
+const serviceBaseUrl = "https://37435e1d227e.ngrok.io";
 
 const getOptions = { method: "get" };
 
 const postOptions = {
   method: "post",
-  headers: {
-    ["content-type"]: "text/json; charset=utf-8",
-  },
+  headers: { "Content-Type": "application/json" },
 };
 
-const fetchInfo = (fetchUrl, fetchOptions) => {
-  return fetch(fetchUrl, fetchOptions).then((response) => {
-    console.log(response.body);
-    return response;
-  });
+const fetchInfo = async (fetchUrl, fetchOptions) => {
+  const response = fetch(fetchUrl, fetchOptions)
+    .then(async (response) => {
+      const responseText = await response.text();
+      console.log(`${response.status} -- ${response.statusText}\n${responseText}`);
+      return responseText;
+    })
+    .catch((e) => console.log(e));
+
+  return response;
 };
 
 const startServer = () => npm.load(() => npm.run("server-start"));
@@ -47,21 +52,24 @@ const configServicePhoneNumber = () => {
 const sendOutgoingMessage = () => {
   const outboundMessage = "Hello all good";
   const targetPhoneNumber = "+4159353327";
-  const fetchUrl = serviceBaseUrl + "send-outgoing";
-  const fetchOptions = { ...postOptions, body: { outboundMessage, targetPhoneNumber } };
+  const fetchUrl = serviceBaseUrl + "/send-outgoing";
+  const fetchOptions = {
+    ...postOptions,
+    body: JSON.stringify({ outboundMessage, targetPhoneNumber }),
+  };
 
   return fetchInfo(fetchUrl, fetchOptions);
 };
 
 const getIncomingMessages = () => {
-  const fetchUrl = serviceBaseUrl + "get-incoming";
+  const fetchUrl = serviceBaseUrl + "/get-incoming";
   const fetchOptions = getOptions;
 
   return fetchInfo(fetchUrl, fetchOptions);
 };
 
 const clearIncomingMessages = () => {
-  const fetchUrl = serviceBaseUrl + "clear-incoming";
+  const fetchUrl = serviceBaseUrl + "/clear-incoming";
   const fetchOptions = postOptions;
 
   return fetchInfo(fetchUrl, fetchOptions);
@@ -82,17 +90,21 @@ const commandsMap = {
 
 const validCommands = Object.keys(commandsMap);
 
-const executeCommand = (options) => {
+const executeCommand = async (options) => {
   const args = Object.keys(options);
   const isValidCommand = validCommands.some((e) => args.includes(e));
-  if (!isValidCommand) throw Error("Invalid command");
+  if (!isValidCommand) help();
   const command = validCommands.find((e) => args.includes(e));
+  const response = commandsMap[command](options);
 
-  return commandsMap[command](options);
+  return response;
 };
 
 const prcoText = () => {
-  return Promise.resolve().then(getCliOptions).then(executeCommand).catch(console.log);
+  return Promise.resolve()
+    .then(getCliOptions) // get options
+    .then(executeCommand) // execute
+    .catch(console.log); // catch errors
 };
 
 prcoText();

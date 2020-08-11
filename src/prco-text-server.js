@@ -5,8 +5,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const MessagingResponse = require("twilio").twiml.MessagingResponse;
 
-console.log("start");
-
 const getEnvVars = () => {
   const config_env_file = path.join(process.env.HOME, "protected", "prco-text-env");
   if (!fs.existsSync(config_env_file)) throwError(`Missing env file: ${config_env_file}`);
@@ -32,13 +30,11 @@ console.log({
   twilioIncomingMessageResponse,
 });
 
-process.exit(0);
-
-const client = require("twilio")(accountSid, authToken);
+const client = require("twilio")(twilioAccountSid, twilioAuthToken);
 
 // create and configure express server
 const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // create appendIncomingLog function
 const incomingLogFile = `${process.env.HOME}/protected/incoming.txt`;
@@ -74,15 +70,23 @@ app.get("/set-service-phone", (req, res) => {
 
 app.post("/send-outgoing", (req, res) => {
   const { outboundMessage, targetPhoneNumber } = { ...req.body };
+  const messageData = {
+    messagingServiceSid: twilioServiceSid,
+    body: outboundMessage,
+    to: targetPhoneNumber,
+  };
+  console.log("messageData: ", messageData);
 
   client.messages
-    .create({
-      messagingServiceSid: twilioServiceSid,
-      body: outboundMessage,
-      to: targetPhoneNumber,
+    .create(messageData)
+    .then((message) => {
+      console.log("OK:", message);
+      res.send(`ok: ${message.sid}`);
     })
-    .then((message) => res.send(`ok: ${message.sid}`))
-    .catch((e) => res.send(e));
+    .catch((e) => {
+      console.log("ERROR:", e);
+      res.send(`ERROR: ${e}`);
+    });
 });
 
 app.get("/get-incoming", (req, res) => {
