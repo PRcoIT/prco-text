@@ -22,14 +22,6 @@ const {
   twilioIncomingMessageResponse,
 } = getEnvVars();
 
-console.log({
-  twilioAccountSid,
-  twilioAuthToken,
-  twilioServiceSid,
-  twilioPhoneNumberSid,
-  twilioIncomingMessageResponse,
-});
-
 const client = require("twilio")(twilioAccountSid, twilioAuthToken);
 
 // create and configure express server
@@ -75,16 +67,15 @@ app.post("/send-outgoing", (req, res) => {
     body: outboundMessage,
     to: targetPhoneNumber,
   };
-  console.log("messageData: ", messageData);
 
   client.messages
     .create(messageData)
     .then((message) => {
-      console.log("OK:", message);
+      // console.log("OK:", message);
       res.send(`ok: ${message.sid}`);
     })
     .catch((e) => {
-      console.log("ERROR:", e);
+      // console.log("ERROR:", e);
       res.send(`ERROR: ${e}`);
     });
 });
