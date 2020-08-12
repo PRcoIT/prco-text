@@ -16,6 +16,20 @@ prco-text components:
 - prco-text command line interface for easy control
 - prco-text server for communicating with twilio
 
+## INSTALLATION
+
+    INSTALL
+
+        npm install @cogent-labs/prco-text
+
+    UPGRADE
+
+        npm upgrade @cogent-labs/prco-text
+
+    CHECK VERSION
+
+        npm -g ls --depth 0
+
 ## USAGE
 
     USAGE
