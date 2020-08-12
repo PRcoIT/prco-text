@@ -1,6 +1,6 @@
 {
   "name": "@cogent-labs/prco-text",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "./scripts/prco-text.js",
   "publishConfig": {
