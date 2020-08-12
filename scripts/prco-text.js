@@ -9,7 +9,7 @@ const { usage } = require("../src/utils/usage");
 
 const isRunningTests = typeof jest !== "undefined";
 
-const serviceBaseUrl = "https://37435e1d227e.ngrok.io";
+const serviceBaseUrl = "http://localhost:1337";
 
 const getOptions = { method: "get" };
 
