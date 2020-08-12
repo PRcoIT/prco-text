@@ -109,12 +109,3 @@ prco-text components:
         CLEAR INCOMING TEXT MESSAGES
 
             prco-text --clear-incoming-messages
-
-## TROUBLESHOOTING
-
-To kill all ngrok tunnels
-
-    killall ngrok
-
-- SHOULD WE KEEP AN INCOMING MESSAGE LOG
-- DOES IT HAVE SPAM CONTROL
