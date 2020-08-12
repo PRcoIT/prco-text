@@ -93,7 +93,7 @@ app.post("/sms", (req, res) => {
   const logMessage = `SmsSid:'${SmsSid}' From:'${From}' Body:'${Body}'\n`;
 
   appendIncomingLog(logMessage);
-  outgoingResponse(res, twilioIncomingMessageResponse);
+  if (twilioIncomingMessageResponse.length) outgoingResponse(res, twilioIncomingMessageResponse);
 });
 
 app.get("/get-incoming", (req, res) => {
