@@ -41,12 +41,12 @@ prco-text components:
 
         NAVIGATING TO TWILIO CONSOLE LOCATIONS
             CONSOLE_HOME -- console > home icon
-            CONSOLE_SERVICES -- console > chat icon > messaging service
-            CONSOLE_SERVICE -- console > chat icon > messaging service > service-name
+            CONSOLE_SERVICES -- console > chat icon > messaging services
+            CONSOLE_SERVICE -- console > chat icon > messaging services > service-name
             CONSOLE_SERVICE_NUMBER -- console > chat icon > messaging service > service-name > sender-pool > number
             CONSOLE_SERVICE_OPT_OUT -- console > chat icon > messaging service > service-name > Opt-Out Management
             CONSOLE_SERVICE_WEBHOOK -- console > chat icon > messaging service > service-name > Integration
-            CONSOLE_VERIFIED_CALLER_IDS -- console > hashtag icon > Verified Caller IDs
+            CONSOLE_VERIFIED_CALLER_IDS -- console > elipsis icon > # phone numbers > Verified Caller IDs
 
 
         SETUP PROCESS
@@ -67,11 +67,11 @@ prco-text components:
             use prco-text to configure service phone number
 
 
-        HOW TO USE NGROK TO MAKE PUBLIC URL
+        HOW TO USE NGROK TO PROVIDE PUBLIC URL
             NOTE: this is for demo purposes
             killall ngrok
             ngrok http 1337
-            update prco-text baseUrl with nrgok url
+            update prco-text baseUrl with public url (example: http://37435e1d227e.ngrok.io)
 
 
     EXAMPLES

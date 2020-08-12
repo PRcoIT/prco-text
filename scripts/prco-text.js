@@ -49,9 +49,9 @@ const configServicePhoneNumber = () => {
   return fetchInfo(fetchUrl, fetchOptions);
 };
 
-const sendOutgoingMessage = () => {
-  const outboundMessage = "Hello all good";
-  const targetPhoneNumber = "+4159353327";
+const sendOutgoingMessage = (options) => {
+  const outboundMessage = options["outbound-message"];
+  const targetPhoneNumber = options["target-phone-number"];
   const fetchUrl = serviceBaseUrl + "/send-outgoing";
   const fetchOptions = {
     ...postOptions,
