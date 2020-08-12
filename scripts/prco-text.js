@@ -7,6 +7,8 @@ const { getCliOptions } = require("../src/config/get-cli-options");
 const { getFilteredObject } = require("../src/utils");
 const { usage } = require("../src/utils/usage");
 
+process.chdir(__dirname);
+
 const isRunningTests = typeof jest !== "undefined";
 
 const serviceBaseUrl = "http://localhost:1337";
@@ -75,7 +77,10 @@ const clearIncomingMessages = () => {
   return fetchInfo(fetchUrl, fetchOptions);
 };
 
-const help = () => console.log(usage());
+const help = () => {
+  console.log(usage());
+  process.exit(0);
+};
 
 const commandsMap = {
   ["start-server"]: startServer,
