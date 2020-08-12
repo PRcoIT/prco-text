@@ -71,7 +71,7 @@ prco-text components:
             NOTE: this is for demo purposes
             killall ngrok
             ngrok http 1337
-            update prco-text baseUrl with public url (example: http://37435e1d227e.ngrok.io)
+            update webhook url with the ngrok public url (example: http://37435e1d227e.ngrok.io)
 
 
     EXAMPLES
