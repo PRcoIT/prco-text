@@ -14,8 +14,8 @@ const validOptions = [
   "configure-service-phone-number",
   "outbound-message",
   "target-phone-number",
-  "get-incominng-messages",
-  "clear-incominng-messages",
+  "get-incoming-messages",
+  "clear-incoming-messages",
   "help",
 ];
 
@@ -33,164 +33,23 @@ const processArgs = async () => {
   const options = parseArgs(process.argv.slice(2), {
     string: validOptions,
   });
+
   const whitelist = Object.keys(options).filter((o) => validOptions.includes(o));
+  if (!whitelist.length) return {};
+
   const filteredOptions = getFilteredObject(options, whitelist);
 
   return filteredOptions;
 };
 
-const getEnvOptions = async (options) => {
-  const processDotenvFile = (options) => {
-    const config_env_file =
-      options.config_env_file || path.join(process.env.HOME, "protected", "prco-text-env");
-
-    if (!fs.existsSync(config_env_file)) {
-      abort(`Missing env file: ${config_env_file}`);
-    }
-
-    require("dotenv").config({ path: config_env_file });
-
-    options.config_env_file = config_env_file;
-  };
-
-  const extractEnvVars = (envVars) => {
-    let result = {};
-    envVars.forEach((envVar) => {
-      result[envVar] = process.env[envVar];
-    });
-
-    return result;
-  };
-
-  const requiredList = [
-    ...(options.isUsingTwilio ? requiredEnvVars.twilio : requiredEnvVars.signalwire),
-    ...(options.serverCommand === "start" ? requiredEnvVars.server : []),
-  ];
-
-  processDotenvFile(options);
-  options.env = extractEnvVars(requiredList);
-
-  return options;
-};
-
-const transformOptions = (options) => {
-  const isServerCommand = !!options.serverCommand;
-  if (isServerCommand) return options;
-
-  // overwrite FROM option if necessary
-  const fromKey = options.isUsingTwilio ? "twilioFrom" : "signalwireFrom";
-  options.from = options.from ? options.from : options.env[fromKey];
-
-  // format phone numbers
-  options.from = phone(options.from)[0];
-  options.to = phone(options.to)[0];
-
-  return options;
-};
-
-const validateOptions = (options) => {
-  const isServerCommand = !!options.serverCommand;
-
-  const validateOptionsExist = () => {
-    try {
-      const whitelist = isServerCommand
-        ? requiredOptions.inboundOptions
-        : requiredOptions.outboundOptions;
-      return hasProps(whitelist, options);
-    } catch (e) {
-      abort(`Missing option: '${e.missingProp}'`, options);
-    }
-  };
-
-  const validateEnvVarsExist = () => {
-    try {
-      const whitelist = [
-        ...(options.isUsingTwilio ? requiredEnvVars.twilio : requiredEnvVars.signalwire),
-        ...(options.serverCommand === "start" ? requiredEnvVars.server : []),
-      ];
-
-      return hasProps(whitelist, options.env);
-    } catch (e) {
-      abort(`Missing env var: '${e.missingProp}'`, options);
-    }
-  };
-
-  const validateRules = () => {
-    const rules = {
-      outboundRules: [
-        {
-          optionName: "service",
-          validatorName: "hasChoices",
-          params: ["twilio", "signalwire"],
-        },
-        { optionName: "from", validatorName: "hasPhone" },
-        { optionName: "to", validatorName: "hasPhone" },
-        { optionName: "message", validatorName: "hasText" },
-        {
-          optionName: "isUsingTwilio",
-          validatorName: "hasBoolean",
-        },
-      ],
-      inboundRules: [
-        {
-          optionName: "service",
-          validatorName: "hasChoices",
-          params: ["twilio", "signalwire"],
-        },
-        {
-          optionName: "isUsingTwilio",
-          validatorName: "hasBoolean",
-        },
-        {
-          optionName: "serverCommand",
-          validatorName: "hasChoices",
-          params: ["start", "stop"],
-        },
-      ],
-    };
-
-    const validatorList = {
-      hasChoices: (option, params) => params.includes(option),
-      hasPhone: (option) => /\+\d{11}$/.test(option),
-      hasText: (option) => !!option.length,
-      hasBoolean: (option) => option === true || option === false,
-    };
-
-    const processRules = (rules) => {
-      rules.forEach(({ optionName, validatorName, params = [] }) => {
-        const validator = validatorList[validatorName];
-        const option = options[optionName];
-        const valid = validator(option, params);
-        if (!valid) abort(`Invalid option: '${optionName}'`);
-      });
-    };
-
-    processRules(isServerCommand ? rules.inboundRules : rules.outboundRules);
-  };
-
-  validateOptionsExist();
-  validateEnvVarsExist();
-  validateRules();
-
-  return options;
-};
-
 const getCliOptions = async () => {
-  return (
-    Promise.resolve()
-      .then(processArgs)
-      // .then(getEnvOptions)
-      // .then(transformOptions)
-      // .then(validateOptions)
-      .then((options) => {
-        return options;
-      })
-      .catch((e) => {
-        if (!isRunningTests) console.log(e.errorMessage);
+  return Promise.resolve()
+    .then(processArgs)
+    .catch((e) => {
+      if (!isRunningTests) console.log(e.errorMessage);
 
-        throw e.error;
-      })
-  );
+      throw e.error;
+    });
 };
 
 module.exports = {
