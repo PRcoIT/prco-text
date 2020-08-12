@@ -26,12 +26,19 @@ const client = require("twilio")(twilioAccountSid, twilioAuthToken);
 
 // create and configure express server
 const app = express();
+
+// create application/json parser
 app.use(bodyParser.json());
 
-// create appendIncomingLog function
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// create log functions
 const incomingLogFile = `${process.env.HOME}/protected/incoming.txt`;
-const stream = fs.createWriteStream(incomingLogFile, { flags: "a" });
-const appendIncomingLog = (json) => stream.write(JSON.stringify(json, null, 2));
+let stream = fs.createWriteStream(incomingLogFile, { flags: "a" });
+const appendIncomingLog = (logMessage) => stream.write(logMessage);
+const getIncomingLog = () => fs.readFileSync(incomingLogFile);
+const clearIncomingLog = () => fs.truncateSync(incomingLogFile);
 
 // create twilioResponse function
 const outgoingResponse = (res, message) => {
@@ -80,25 +87,26 @@ app.post("/send-outgoing", (req, res) => {
     });
 });
 
+app.post("/sms", (req, res) => {
+  const incomingMsgData = { ...req.body };
+  const { SmsSid, From, Body } = incomingMsgData;
+  const logMessage = `SmsSid:'${SmsSid}' From:'${From}' Body:'${Body}'\n`;
+
+  appendIncomingLog(logMessage);
+  outgoingResponse(res, twilioIncomingMessageResponse);
+});
+
 app.get("/get-incoming", (req, res) => {
-  const incomingMessages = getIncomingMessages();
-  res.send(incomingMessages);
+  const incomingLog = getIncomingLog();
+  res.send(incomingLog);
 });
 
 app.post("/clear-incoming", (req, res) => {
-  clearIncomingMessages();
+  clearIncomingLog();
   res.send("ok");
 });
 
-app.post("/sms", (req, res) => {
-  const incomingMsgData = { ...req.body };
-
-  appendIncomingLog(incomingMsgData);
-  outgoingResponse(res, outgoingResponseMessage);
-});
-
 app.get("/", (req, res) => {
-  appendIncomingLog({ message: "somebody is checking if we're alive." });
   res.send("PRCO incoming message server is alive!\n");
 });
 
