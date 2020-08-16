@@ -16,15 +16,42 @@ prco-text components:
 - prco-text command line interface for easy control
 - prco-text server for communicating with twilio
 
+## Prerequisites
+
+Node is required to use this module. Here is the best way to install Node:
+
+    install xcode if needed
+
+        xcode-select --install
+
+            click install button if it appears
+            click agree button if it appears
+
+    create .bash_profile if needed
+
+        NOTE: if macos catilana or newer then use ~/.zshrc instead of ~/.bash_profile below
+
+        touch ~/.bash_profile
+
+    Install nvm
+
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+
+        source ~/.bash_profile
+
+install node
+
+    nvm install 12
+
 ## INSTALLATION
 
     INSTALL
 
-        npm install @cogent-labs/prco-text
+        npm install -g @cogent-labs/prco-text
 
     UPGRADE
 
-        npm upgrade @cogent-labs/prco-text
+        npm upgrade -g @cogent-labs/prco-text
 
     CHECK VERSION
 
@@ -50,23 +77,40 @@ prco-text components:
 
     ONE TIME SETUP
 
-        NOTE: env file is located at "$HOME/protected/prco-text-env
         NOTE: prco-text server must be publicly accessible
 
+        MAKE ENV FILE IF NECESSARY
+
+            mkdir ~/protected
+            touch ~/protected/prco-text-env
+
+            EXAMPLE ~/protected/prco-text-env
+
+                # PRCO TEXT CONFIG
+                twilioAccountSid=xxxxxxxxxxx
+                twilioAuthToken=xxxxxxxxxxx
+                twilioServiceSid=xxxxxxxxxxx
+                twilioPhoneNumberSid=xxxxxxxxxxx
+                twilioIncomingMessageResponse="Yo! PRCO got your message."
+
         NAVIGATING TO TWILIO CONSOLE LOCATIONS
-            CONSOLE_HOME -- console > home icon
-            CONSOLE_SERVICES -- console > chat icon > messaging services
-            CONSOLE_SERVICE -- console > chat icon > messaging services > service-name
-            CONSOLE_SERVICE_NUMBER -- console > chat icon > messaging service > service-name > sender-pool > number
-            CONSOLE_SERVICE_OPT_OUT -- console > chat icon > messaging service > service-name > Opt-Out Management
-            CONSOLE_SERVICE_WEBHOOK -- console > chat icon > messaging service > service-name > Integration
-            CONSOLE_VERIFIED_CALLER_IDS -- console > elipsis icon > # phone numbers > Verified Caller IDs
+            TWILIO -- www.twilio.com
+            CONSOLE_DASHBOARD -- console button
+            CONSOLE_SERVICES -- CONSOLE_DASHBOARD > chat icon > messaging services
+            CONSOLE_SERVICE -- CONSOLE_DASHBOARD > chat icon > messaging services > (service-name)
+            CONSOLE_SERVICE_NUMBER -- CONSOLE_DASHBOARD > chat icon > messaging service > service-name > sender-pool > number
+            CONSOLE_SERVICE_OPT_OUT -- CONSOLE_DASHBOARD > chat icon > messaging service > service-name > Opt-Out Management
+            CONSOLE_SERVICE_WEBHOOK -- CONSOLE_DASHBOARD > chat icon > messaging service > service-name > Integration
+            CONSOLE_VERIFIED_CALLER_IDS -- CONSOLE_DASHBOARD > elipsis icon > # phone numbers > Verified Caller IDs
+
+
+
 
 
         SETUP PROCESS
             purchase Twilio account with an SMS capable number
             use twilio-site to update env file: twilioAccountSid, twilioAuthToken, twilioPhoneNumberSid
-                -- CONSOLE_HOME: twilioAccountSid, twilioAuthToken
+                -- CONSOLE_DASHBOARD: twilioAccountSid, twilioAuthToken
                 -- CONSOLE_SERVICE_NUMBER: twilioPhoneNumberSid
             use twilio-site to configure opt-in, opt-out, and help custom messages
                 -- CONSOLE_SERVICE_OPT_OUT: click the edit link
@@ -83,6 +127,7 @@ prco-text components:
 
         HOW TO USE NGROK TO PROVIDE PUBLIC URL
             NOTE: this is for demo purposes
+            create ngrok account
             killall ngrok
             ngrok http 1337
             update webhook url with the ngrok public url (example: http://37435e1d227e.ngrok.io/sms)
