@@ -3,6 +3,20 @@
 const npm = require("npm");
 const fetch = require("node-fetch");
 
+const fs = require("fs");
+const path = require("path");
+
+const getEnvVars = () => {
+  const config_env_file = path.join(process.env.HOME, "protected", "prco-text-env");
+  if (!fs.existsSync(config_env_file)) throwError(`Missing env file: ${config_env_file}`);
+  require("dotenv").config({ path: config_env_file });
+
+  return process.env;
+};
+
+// collect env info
+const { twilioAccountSid, twilioAuthToken } = getEnvVars();
+
 const { getCliOptions } = require("../src/config/get-cli-options");
 const { getFilteredObject } = require("../src/utils");
 const { usage } = require("../src/utils/usage");
@@ -24,7 +38,6 @@ const fetchInfo = async (fetchUrl, fetchOptions) => {
   const response = fetch(fetchUrl, fetchOptions)
     .then(async (response) => {
       const responseText = await response.text();
-      console.log(`${response.status} -- ${response.statusText}\n${responseText}`);
       return responseText;
     })
     .catch((e) => console.log(e));
@@ -51,7 +64,22 @@ const configServicePhoneNumber = () => {
   return fetchInfo(fetchUrl, fetchOptions);
 };
 
-const sendOutgoingMessage = (options) => {
+const getOutgoingMessageStatus = async (messageId) => {
+  const url = `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/Messages/${messageId}.json`;
+  const fetchOptions = {
+    headers: {
+      Authorization:
+        "Basic " + Buffer.from(`${twilioAccountSid}: ${twilioAuthToken}`).toString("base64"),
+    },
+  };
+
+  const response = await fetch(url, fetchOptions);
+  const result = await response.json();
+
+  return result;
+};
+
+const sendOutgoingMessage = async (options) => {
   const outboundMessage = options["outbound-message"];
   const targetPhoneNumber = options["target-phone-number"];
   const fetchUrl = serviceBaseUrl + "/send-outgoing";
@@ -60,7 +88,22 @@ const sendOutgoingMessage = (options) => {
     body: JSON.stringify({ outboundMessage, targetPhoneNumber }),
   };
 
-  return fetchInfo(fetchUrl, fetchOptions);
+  const messageId = await fetchInfo(fetchUrl, fetchOptions);
+
+  let { status, error_message, error_code } = await getOutgoingMessageStatus(messageId.slice(4));
+
+  if (error_code == "21608") {
+    error_message = "Developer account must use validated numbers.";
+  }
+
+  const result = `
+  message_id: ${messageId}
+  status: ${status}
+  error_message: ${error_message}
+  error_code: ${error_code}
+  `;
+
+  console.log(result);
 };
 
 const getIncomingMessages = () => {
