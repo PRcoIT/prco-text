@@ -79,6 +79,10 @@ const getOutgoingMessageStatus = async (messageId) => {
   return result;
 };
 
+const delayMs = (ms) => {
+  return new Promise((resolve, reject) => setTimeout(() => resolve(true), ms));
+};
+
 const sendOutgoingMessage = async (options) => {
   const outboundMessage = options["outbound-message"];
   const targetPhoneNumber = options["target-phone-number"];
@@ -90,6 +94,10 @@ const sendOutgoingMessage = async (options) => {
 
   const messageId = await fetchInfo(fetchUrl, fetchOptions);
 
+  console.log("delaying 15 seconds before asking twilio for status...");
+
+  await delayMs(15000);
+
   let { status, error_message, error_code } = await getOutgoingMessageStatus(messageId.slice(4));
 
   if (error_code == "21608") {
@@ -97,7 +105,7 @@ const sendOutgoingMessage = async (options) => {
   }
 
   const result = `
-  message_id: ${messageId}
+  message_id: ${messageId.slice(4)}
   status: ${status}
   error_message: ${error_message}
   error_code: ${error_code}
