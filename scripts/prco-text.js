@@ -94,8 +94,6 @@ const sendOutgoingMessage = async (options) => {
 
   const messageId = await fetchInfo(fetchUrl, fetchOptions);
 
-  console.log("delaying 15 seconds before asking twilio for status...");
-
   await delayMs(15000);
 
   let { status, error_message, error_code } = await getOutgoingMessageStatus(messageId.slice(4));
