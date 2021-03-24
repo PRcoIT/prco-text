@@ -79,6 +79,13 @@ const getOutgoingMessageStatus = async (messageId) => {
   return result;
 };
 
+const getMessageStatusToConsole = async (messageObj) => {
+  const messageId = messageObj["get-message-status"];
+  const messageInfo = await getOutgoingMessageStatus(messageId);
+  const status = messageInfo["status"];
+  console.log(`message ID: ${messageId}\nstatus: ${status}`);
+};
+
 const delayMs = (ms) => {
   return new Promise((resolve, reject) => setTimeout(() => resolve(true), ms));
 };
@@ -137,6 +144,7 @@ const commandsMap = {
   ["config-service-name"]: configServiceName,
   ["config-service-phone-number"]: configServicePhoneNumber,
   ["outbound-message"]: sendOutgoingMessage,
+  ["get-message-status"]: getMessageStatusToConsole,
   ["get-incoming-messages"]: getIncomingMessages,
   ["clear-incoming-messages"]: clearIncomingMessages,
   ["help"]: help,

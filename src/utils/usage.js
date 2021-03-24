@@ -59,6 +59,11 @@ const usage = () => {
             prco-text --outbound-message "Your inspection request is ready" --target-phone-number +14158761234
 
 
+        GET MESSAGES STATUS
+
+            prco-text --get-message-status SMd8ef537dd216485e8108f83143c1ed05
+
+
         GET INCOMING TEXT MESSAGES
 
             prco-text --get-incoming-messages
