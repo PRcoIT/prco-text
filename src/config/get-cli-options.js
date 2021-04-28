@@ -14,6 +14,7 @@ const validOptions = [
   "configure-service-phone-number",
   "outbound-message",
   "get-message-status",
+  "source-phone-number",
   "target-phone-number",
   "get-incoming-messages",
   "clear-incoming-messages",

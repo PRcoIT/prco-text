@@ -68,10 +68,11 @@ app.get("/set-service-phone", (req, res) => {
 });
 
 app.post("/send-outgoing", (req, res) => {
-  const { outboundMessage, targetPhoneNumber } = { ...req.body };
+  const { outboundMessage, sourcePhoneNumber, targetPhoneNumber } = { ...req.body };
   const messageData = {
     messagingServiceSid: twilioServiceSid,
     body: outboundMessage,
+    from: sourcePhoneNumber,
     to: targetPhoneNumber,
   };
 
@@ -89,8 +90,9 @@ app.post("/send-outgoing", (req, res) => {
 
 app.post("/sms", (req, res) => {
   const incomingMsgData = { ...req.body };
-  const { SmsSid, From, Body } = incomingMsgData;
-  const logMessage = `SmsSid:'${SmsSid}' From:'${From}' Body:'${Body}'\n`;
+  const { SmsSid, From, To, Body } = incomingMsgData;
+  console.log("incomingMsgData: ", incomingMsgData);
+  const logMessage = `SmsSid:'${SmsSid}' From:'${From}' To:'${To}' Body:'${Body}'\n`;
 
   appendIncomingLog(logMessage);
   if (twilioIncomingMessageResponse.length) outgoingResponse(res, twilioIncomingMessageResponse);

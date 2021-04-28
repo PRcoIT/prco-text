@@ -56,7 +56,9 @@ const usage = () => {
 
         SEND TEXT MESSAGE
 
-            prco-text --outbound-message "Your inspection request is ready" --target-phone-number +14158761234
+            prco-text --outbound-message "Your inspection request is ready" \
+                --source-phone-number +19252582639   \
+                --target-phone-number +14158761234
 
 
         GET MESSAGES STATUS

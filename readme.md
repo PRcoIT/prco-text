@@ -130,8 +130,11 @@ install node
             create ngrok account
             killall ngrok
             ngrok http 1337
-            update webhook url with the ngrok public url (example: http://37435e1d227e.ngrok.io/sms)
-
+            note public url -- __ngrok-url__ + `/sms`
+            update twilio messaging service -- integration
+                    Send a webhook
+                    Request URL:  https://ee2bf9ff5ecb.ngrok.io/sms     // example url
+                    HTTP Post
 
     EXAMPLES
 
@@ -157,7 +160,9 @@ install node
 
         SEND TEXT MESSAGE
 
-            prco-text --outbound-message "Your inspection request is ready" --target-phone-number +14158761234
+            prco-text --outbound-message "Your inspection request is ready" \
+                --source-phone-number +19252582639   \
+                --target-phone-number +14158761234
 
 
         GET INCOMING TEXT MESSAGES

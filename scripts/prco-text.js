@@ -82,6 +82,7 @@ const getOutgoingMessageStatus = async (messageId) => {
 const getMessageStatusToConsole = async (messageObj) => {
   const messageId = messageObj["get-message-status"];
   const messageInfo = await getOutgoingMessageStatus(messageId);
+  console.log("messageInfo: ", messageInfo);
   const status = messageInfo["status"];
   console.log(`message ID: ${messageId}\nstatus: ${status}`);
 };
@@ -92,11 +93,12 @@ const delayMs = (ms) => {
 
 const sendOutgoingMessage = async (options) => {
   const outboundMessage = options["outbound-message"];
+  const sourcePhoneNumber = options["source-phone-number"];
   const targetPhoneNumber = options["target-phone-number"];
   const fetchUrl = serviceBaseUrl + "/send-outgoing";
   const fetchOptions = {
     ...postOptions,
-    body: JSON.stringify({ outboundMessage, targetPhoneNumber }),
+    body: JSON.stringify({ outboundMessage, sourcePhoneNumber, targetPhoneNumber }),
   };
 
   const messageId = await fetchInfo(fetchUrl, fetchOptions);
